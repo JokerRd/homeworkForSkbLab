@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;IFEXISTS=FALSE;DB_CLOSE_DELAY=-1
+    driverClassName: org.h2.Driver
+    username: test
+    password: password
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+  h2:
+    console:
+      enabled: true
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+      key-serializer: org.apache.kafka.common.serialization.LongSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      client-id: "kafka"
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: kafka
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.LongDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: "*"
+
+app:
+  topicRequest: USER_INFO_REQUEST
+  topicReply: USER_INFO_REPLY
+  groupId: kafka
