@@ -1,10 +1,10 @@
 package ru.skblab.nohttpbrokerservice.services;
 
 
-import ru.skblab.nohttpbrokerservice.models.UserInfoShort;
-import ru.skblab.nohttpbrokerservice.models.UserState;
+import ru.skblab.nohttpbrokerservice.models.UserFromBroker;
+import ru.skblab.nohttpbrokerservice.models.UserStateToBroker;
 
 public interface ReceiverService {
 
-    UserState listen(UserInfoShort userInfoShort);
+    UserStateToBroker listen(UserFromBroker userFromBroker);
 }

@@ -10,8 +10,8 @@ import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
-import ru.skblab.nohttpbrokerservice.models.UserInfoShort;
-import ru.skblab.nohttpbrokerservice.models.UserState;
+import ru.skblab.nohttpbrokerservice.models.UserFromBroker;
+import ru.skblab.nohttpbrokerservice.models.UserStateToBroker;
 import java.util.Map;
 
 @EnableKafka
@@ -20,20 +20,20 @@ public class KafkaConfiguration {
 
 
     @Bean
-    public DefaultKafkaConsumerFactory<Long, UserInfoShort> consumerFactory(KafkaProperties properties) {
+    public DefaultKafkaConsumerFactory<Long, UserFromBroker> consumerFactory(KafkaProperties properties) {
         Map<String, Object> props = properties.buildConsumerProperties();
-        DefaultKafkaConsumerFactory<Long, UserInfoShort> pf = new DefaultKafkaConsumerFactory<>(props,
+        DefaultKafkaConsumerFactory<Long, UserFromBroker> pf = new DefaultKafkaConsumerFactory<>(props,
                 new LongDeserializer(),
-                new JsonDeserializer<>(UserInfoShort.class, false)
+                new JsonDeserializer<>(UserFromBroker.class, false)
                         .ignoreTypeHeaders());
         return pf;
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<Long, UserInfoShort>
-    kafkaListenerContainerFactory(KafkaProperties properties, KafkaTemplate<Long, UserState> template) {
+    public ConcurrentKafkaListenerContainerFactory<Long, UserFromBroker>
+    kafkaListenerContainerFactory(KafkaProperties properties, KafkaTemplate<Long, UserStateToBroker> template) {
 
-        ConcurrentKafkaListenerContainerFactory<Long, UserInfoShort> factory =
+        ConcurrentKafkaListenerContainerFactory<Long, UserFromBroker> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory(properties));
         factory.setReplyTemplate(template);

@@ -12,8 +12,8 @@ import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.requestreply.ReplyingKafkaTemplate;
 import org.springframework.kafka.support.converter.StringJsonMessageConverter;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
-import ru.skblab.broker.models.UserInfoShort;
-import ru.skblab.broker.models.UserState;
+import ru.skblab.broker.dto.UserToBroker;
+import ru.skblab.broker.dto.UserStateFromBroker;
 
 import java.util.Map;
 
@@ -29,10 +29,10 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    public ConcurrentMessageListenerContainer<Long, UserState> repliesContainer(
-            ConcurrentKafkaListenerContainerFactory<Long, UserState> containerFactory) {
+    public ConcurrentMessageListenerContainer<Long, UserStateFromBroker> repliesContainer(
+            ConcurrentKafkaListenerContainerFactory<Long, UserStateFromBroker> containerFactory) {
 
-        ConcurrentMessageListenerContainer<Long, UserState> repliesContainer =
+        ConcurrentMessageListenerContainer<Long, UserStateFromBroker> repliesContainer =
                 containerFactory.createContainer(properties.getTopicReply());
         repliesContainer.getContainerProperties().setGroupId(properties.getGroupId());
         repliesContainer.setAutoStartup(false);
@@ -40,9 +40,9 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    public ReplyingKafkaTemplate<Long, UserInfoShort, UserState> replyingTemplate(
-            ProducerFactory<Long, UserInfoShort> pf,
-            ConcurrentMessageListenerContainer<Long, UserState> repliesContainer) {
+    public ReplyingKafkaTemplate<Long, UserToBroker, UserStateFromBroker> replyingTemplate(
+            ProducerFactory<Long, UserToBroker> pf,
+            ConcurrentMessageListenerContainer<Long, UserStateFromBroker> repliesContainer) {
 
         return new ReplyingKafkaTemplate<>(pf, repliesContainer);
     }
@@ -53,20 +53,20 @@ public class KafkaConfiguration {
     }
 
     @Bean
-    public DefaultKafkaConsumerFactory<Long, UserState> consumerFactory(KafkaProperties properties) {
+    public DefaultKafkaConsumerFactory<Long, UserStateFromBroker> consumerFactory(KafkaProperties properties) {
         Map<String, Object> props = properties.buildConsumerProperties();
-        DefaultKafkaConsumerFactory<Long, UserState> pf = new DefaultKafkaConsumerFactory<>(props,
+        DefaultKafkaConsumerFactory<Long, UserStateFromBroker> pf = new DefaultKafkaConsumerFactory<>(props,
                 new LongDeserializer(),
-                new JsonDeserializer<>(UserState.class)
+                new JsonDeserializer<>(UserStateFromBroker.class)
                         .ignoreTypeHeaders());
         return pf;
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<Long, UserState>
+    public ConcurrentKafkaListenerContainerFactory<Long, UserStateFromBroker>
     kafkaListenerContainerFactory(KafkaProperties properties) {
 
-        ConcurrentKafkaListenerContainerFactory<Long, UserState> factory =
+        ConcurrentKafkaListenerContainerFactory<Long, UserStateFromBroker> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(consumerFactory(properties));
         return factory;

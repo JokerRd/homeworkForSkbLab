@@ -3,9 +3,8 @@ package ru.skblab.nohttpbrokerservice.services;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.stereotype.Service;
-import ru.skblab.nohttpbrokerservice.configuration.KafkaConfiguration;
-import ru.skblab.nohttpbrokerservice.models.UserInfoShort;
-import ru.skblab.nohttpbrokerservice.models.UserState;
+import ru.skblab.nohttpbrokerservice.models.UserFromBroker;
+import ru.skblab.nohttpbrokerservice.models.UserStateToBroker;
 
 import java.time.LocalDateTime;
 
@@ -16,8 +15,8 @@ public class ReceiverServiceImpl implements ReceiverService {
     @Override
     @KafkaListener(topics = "USER_INFO_REQUEST")
     @SendTo
-    public UserState listen(UserInfoShort userInfoShort) {
-        return new UserState(userInfoShort.getId(),
+    public UserStateToBroker listen(UserFromBroker userFromBroker) {
+        return new UserStateToBroker(userFromBroker.getId(),
                 "VALID",
                 LocalDateTime.now(),
                 "Должник");

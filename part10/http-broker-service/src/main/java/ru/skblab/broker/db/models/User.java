@@ -14,7 +14,6 @@ public class User {
 
     @Id
     @GeneratedValue
-    @JsonIgnore
     @Setter
     @Getter
     private long id;
