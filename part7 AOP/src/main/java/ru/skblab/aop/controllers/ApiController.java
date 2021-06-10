@@ -12,7 +12,7 @@ import ru.skblab.aop.aspects.Counter;
 public class ApiController {
     private static final Logger log = LoggerFactory.getLogger(ApiController.class);
 
-    @Counter
+    @Counter(id = "first", maxRequest = 7)
     @Operation(summary = "first api method")
     @GetMapping("/first")
     public String firstApi() {
@@ -20,7 +20,7 @@ public class ApiController {
         return "first";
     }
 
-    @Counter
+    @Counter(id = "second")
     @Operation(summary = "second api method")
     @PostMapping("/second")
     public String secondApi() {

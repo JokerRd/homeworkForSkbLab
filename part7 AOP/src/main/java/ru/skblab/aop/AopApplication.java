@@ -7,7 +7,6 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import ru.skblab.aop.configuration.AopConfiguration;
 
 @SpringBootApplication
-@EnableAspectJAutoProxy
 @EnableConfigurationProperties(AopConfiguration.class)
 public class AopApplication {
 

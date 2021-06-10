@@ -10,4 +10,5 @@ public class AopConfiguration {
     @Getter
     @Setter
     private int maxRequest;
+
 }
