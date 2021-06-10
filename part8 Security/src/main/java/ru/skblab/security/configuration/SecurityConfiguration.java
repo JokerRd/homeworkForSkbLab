@@ -17,13 +17,7 @@ import java.util.List;
 @EnableWebSecurity
 @EnableGlobalMethodSecurity( jsr250Enabled = true)
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
-
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception
-    {
-        auth.userDetailsService(inMemoryUserDetailsManager());
-    }
-
+    
     @Bean
     public PasswordEncoder passwordEncoder()
     {
