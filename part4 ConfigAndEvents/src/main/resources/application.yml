@@ -1,9 +1,0 @@
-spring:
-  profiles:
-    active: dev
-app:
-  first-config: 1
-  second-config:
-    subconfig: test_me
-    user: login
-    ttl: 123s
