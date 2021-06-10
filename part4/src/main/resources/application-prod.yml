@@ -1,0 +1,6 @@
+app:
+  first-config: 4
+  second-config:
+    subconfig: 34
+    user: testr
+    ttl: 1s

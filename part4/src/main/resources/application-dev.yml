@@ -1,0 +1,6 @@
+app:
+  first-config: 5
+  second-config:
+    subconfig: test4
+    user: password
+    ttl: 12s
